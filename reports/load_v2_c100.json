@@ -1,0 +1,27 @@
+{
+  "target": "http://127.0.0.1:37445",
+  "concurrency": 100,
+  "total_requests": 300,
+  "duration_s": 5.86,
+  "rps": 51.18,
+  "error_rate": 0.0167,
+  "status_codes": {
+    "200": 295,
+    "503": 5
+  },
+  "latency_ms": {
+    "min": 228.6,
+    "avg": 1292.3,
+    "p50": 483.1,
+    "p90": 3331.3,
+    "p95": 3893.6,
+    "p99": 4316.9,
+    "max": 5542.3
+  },
+  "total_cost_usd": 0.010222,
+  "slo": {
+    "p95_ms": 500,
+    "error_rate": 0.02,
+    "passed": false
+  }
+}

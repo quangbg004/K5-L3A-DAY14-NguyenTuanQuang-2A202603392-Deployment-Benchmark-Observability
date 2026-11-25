@@ -111,7 +111,7 @@ Content-Type: application/json
 
 ### Exercise 3.1 — Deploy trên Railway
 
-Agent Part 6 đã có cấu hình Railway. `railway.toml` chọn `DOCKERFILE` để dùng Dockerfile multi-stage và đặt health check `/health`. Khi deploy, service agent lấy `AGENT_API_KEY` từ biến môi trường và nhận `REDIS_URL` từ service Redis. URL public, ảnh deploy và kết quả bốn lệnh tự kiểm được bổ sung ở CP6 sau khi service thực sự chạy trên cloud. [Cấu hình agent](06-lab-complete/railway.toml) · [Yêu cầu CP6](CHECKPOINTS.md#cp6--cloud-deployment-250--315)
+Tôi triển khai agent Part 6 lên Railway, dùng Dockerfile trong thư mục `/06-lab-complete` và đặt health check `/health` trong dashboard. Railway báo `Healthcheck succeeded!`. Kiểm tra qua domain public từ Ubuntu WSL xác nhận `GET /health → 200`, `GET /ready → 200`, `POST /ask` thiếu API key → `401` và `POST /ask` với API key hợp lệ → `200`. Kết quả `/ready` xác nhận agent kết nối được Redis tại thời điểm kiểm tra. [URL public](https://day14-agent-production-49fc9e3e.up.railway.app) · [Các lệnh kiểm tra](DEPLOYMENT.md) · [Dashboard Railway](screenshots/dashboard.png) · [Deployment Active](screenshots/running.png) · [Ảnh kết quả HTTP](screenshots/test.png)
 
 ### Exercise 3.2 — So sánh Railway và Render
 
@@ -274,3 +274,7 @@ Agent dùng sliding window Redis theo API key và ghi tổng chi phí vào Redis
 - Tôi dùng Codex để đối chiếu bản mẫu xác thực, rate limit và cost guard trong CP3. Tôi tự chạy các lệnh `curl` và quan sát mã `401`, `200`, `429`. Codex ghi lại kết quả từ ảnh, kiểm tra bổ sung JWT trên bản local và giải thích cách lưu ngân sách theo tháng trong Redis.
 - Tôi dùng Codex để tóm tắt kết quả CP4. Tôi tự gửi SIGTERM trong lúc có request và chạy `test_stateless.py` với ba replica. Codex ghi lại bằng chứng tôi gửi, đối chiếu cách Nginx và Redis được sử dụng, và gọi bổ sung `/health` cùng `/ready` trên bản develop trong WSL.
 - Tôi nhờ Codex triển khai các TODO của agent CP5 và cập nhật mục cloud trong file này. Codex chọn Railway cho cấu hình deploy và dùng ngân sách theo ngày UTC. Codex chạy nguyên script chấm trong WSL với Docker, ghi lại `PASS 12/12`, rồi kiểm tra bổ sung Docker Compose với 12 request đồng thời và thử dừng Redis.
+- Tôi dùng Codex để đọc log lỗi Root Directory trên Railway và hướng dẫn kiểm tra CP6. Tôi chạy deployment trên Railway và cung cấp log health check cùng domain public. Codex kiểm tra ba request công khai trong WSL và ghi kết quả thật vào `DEPLOYMENT.md`.
+- Tôi nhờ Codex chạy đủ bốn kiểm tra CP6, gồm request có API key. Codex ghi nhận `200, 200, 401, 200` từ domain Railway và xuất kết quả HTTP trong WSL thành `screenshots/test.png`.
+- Tôi nhờ Codex thực hiện CP7. Codex thêm histogram độ dài câu hỏi, chạy load test và eval local trong WSL, bổ sung hai tài liệu JWT và HPA dựa trên lỗi của baseline, rồi kiểm tra lại. [Báo cáo CP7](BENCHMARK_REPORT.md) dùng kết quả đã lưu trong `reports/`.
+- Tôi nhờ Codex hoàn thiện CP8. Codex sửa Dockerfile observability để đường dẫn home của user khớp thư mục cài dependencies, rồi xác minh 1 và 3 replica trong hai lượt Locust. Codex chạy hai thí nghiệm lỗi, kiểm tra alert rules, đối chiếu `trace_id` với log JSON và lưu ảnh thật của stack local. [Báo cáo CP8](BENCHMARK_REPORT.md#4-observability-stack-production-cp8)
